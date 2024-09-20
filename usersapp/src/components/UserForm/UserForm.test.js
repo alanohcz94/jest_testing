@@ -35,4 +35,23 @@ describe("Testing UserForm Component", () => {
     expect(mock).toHaveBeenCalled();
     expect(mock).toHaveBeenCalledWith({ name: "Kim", email: "kim@mail.com" });
   });
+
+  test('Once submited input should be emptied', async () => {
+    // render
+    render(<UserForm onAddUser={() => {}} />);
+    
+    // Get UI
+    const nameInput = screen.getByRole("textbox", {name: /name/i});
+    const emailInput = screen.getByRole("textbox", {name: /email/i});
+    const button = screen.getByRole('button', {name: /add user/i});
+
+    // Action of UI
+    await user.type(nameInput, 'Kim');
+    await user.type(emailInput, 'Kim@mail.com');
+    await user.click(button);
+
+    // Assert
+    expect(nameInput).toHaveValue("");
+    expect(emailInput).toHaveValue("");
+  })
 });
